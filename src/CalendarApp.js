@@ -1,9 +1,15 @@
-import React from 'react'
+import AppRouter from './router/AppRouter'
 
 const CalendarApp = () => {
     return (
         <div>
-            <h1>Calendar MERN</h1>
+            <AppRouter />
+
+            {/*
+               // exact /login - LoginScreen
+               // exact / - CalendarScreen
+            */}
+
         </div>
     )
 }
