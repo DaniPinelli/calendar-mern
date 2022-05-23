@@ -25,18 +25,48 @@ const CalendarModal = () => {
     const [dateStart, setDateStart] = useState(now.toDate());
     const [dateEnd, setDateEnd] = useState(nowPlusOne.toDate());
 
+    const [formValues, setFormValues] = useState(
+        {
+            title: 'Evento',
+            notes: '',
+            start: now.toDate(),
+            end: nowPlusOne.toDate(),
+        }
+    );
+
+    const { notes, title } = formValues;
+
+    const handleImputChange = ({ target }) => {
+
+        setFormValues({
+            ...formValues,
+            [target.name]: target.value
+        });
+    }
+
+    const handleStartDateChange = (e) => {
+        setDateStart(e);
+        setFormValues({
+            ...formValues,
+            start: e
+        });
+    }
+
+    const handleEndDateChange = (e) => {
+        setDateEnd(e);
+        setFormValues({
+            ...formValues,
+            end: e
+        });
+    }
+
     const closeModal = () => {
 
     }
 
-    const onChangeStart = (e) => {
-        setDateStart(e)
-        console.log(e)
-    }
-
-    const onChangeEnd = (e) => {
-        setDateEnd(e)
-        console.log(e)
+    const handleSubmitForm = (e) => {
+        e.preventDefault();
+        console.log(formValues);
     }
 
     return (
@@ -50,16 +80,29 @@ const CalendarModal = () => {
         >
             <h1> Nuevo evento </h1>
             <hr />
-            <form className="container">
+            <form
+                className="container"
+                onSubmit={handleSubmitForm}
+            >
 
                 <div className="form-group">
                     <label>Fecha y hora inicio</label>
-                    <DateTimePicker onChange={onChangeStart} value={dateStart} className='form-control' />
+                    <DateTimePicker
+                        onChange={handleStartDateChange}
+                        value={dateStart}
+                        className='form-control'
+                        minDate={now.toDate()}
+                    />
                 </div>
 
                 <div className="form-group">
                     <label>Fecha y hora fin</label>
-                    <DateTimePicker onChange={onChangeEnd} value={dateEnd} className='form-control' />
+                    <DateTimePicker
+                        onChange={handleEndDateChange}
+                        value={dateEnd}
+                        className='form-control'
+                        minDate={dateStart}
+                    />
                 </div>
 
                 <hr />
@@ -71,6 +114,8 @@ const CalendarModal = () => {
                         placeholder="Título del evento"
                         name="title"
                         autoComplete="off"
+                        value={title}
+                        onChange={handleImputChange}
                     />
                     <small id="emailHelp" className="form-text text-muted">Una descripción corta</small>
                 </div>
@@ -82,6 +127,8 @@ const CalendarModal = () => {
                         placeholder="Notas"
                         rows="5"
                         name="notes"
+                        value={notes}
+                        onChange={handleImputChange}
                     ></textarea>
                     <small id="emailHelp" className="form-text text-muted">Información adicional</small>
                 </div>
