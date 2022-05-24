@@ -1,16 +1,12 @@
 import AppRouter from './router/AppRouter'
+import { Provider } from 'react-redux'
+import { store } from './store/store';
 
 const CalendarApp = () => {
     return (
-        <div>
+        <Provider store={store}>
             <AppRouter />
-
-            {/*
-               // exact /login - LoginScreen
-               // exact / - CalendarScreen
-            */}
-
-        </div>
+        </Provider>
     )
 }
 
