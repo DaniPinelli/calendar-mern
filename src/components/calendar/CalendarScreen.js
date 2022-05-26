@@ -9,6 +9,8 @@ import CalendarEvent from './CalendarEvent'
 import { useState } from 'react'
 import CalendarModal from './CalendarModal';
 import { uiOpenModal } from '../../actions/ui';
+import { eventSetActive } from '../../actions/events'
+import AddNewFab from '../ui/AddNewFab'
 
 moment.locale('es')
 
@@ -38,10 +40,12 @@ const CalendarScreen = () => {
 
     const onDoubleClick = (e) => {
         dispatch(uiOpenModal())
+
     }
 
     const onSelectEvent = (e) => {
-        console.log(e)
+        dispatch(eventSetActive(e))
+        dispatch(uiOpenModal())
     }
 
     const onViewChange = (e) => {
@@ -81,7 +85,7 @@ const CalendarScreen = () => {
                 onView={onViewChange}
                 view={lastView}
             />
-
+            <AddNewFab />
             <CalendarModal />
         </div>
     )
