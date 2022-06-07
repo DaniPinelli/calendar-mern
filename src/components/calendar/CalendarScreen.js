@@ -1,5 +1,5 @@
 import { Calendar, momentLocalizer } from 'react-big-calendar'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
 import 'moment/locale/es'
 import Navbar from "../ui/Navbar"
@@ -16,23 +16,10 @@ moment.locale('es')
 
 const localizer = momentLocalizer(moment)
 
-const myEventsList = [
-    {
-        title: 'All Day Event very long title',
-        start: moment().toDate(),
-        end: moment().add(2, 'hours').toDate(),
-        bgcolor: '#fafafa',
-        notes: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
-        user: {
-            _id: '1',
-            name: 'Dani',
-        }
-    }
-]
-
 const CalendarScreen = () => {
 
     const dispatch = useDispatch();
+    const { events } = useSelector(state => state.calendar);
 
 
     const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'month');
@@ -45,7 +32,6 @@ const CalendarScreen = () => {
 
     const onSelectEvent = (e) => {
         dispatch(eventSetActive(e))
-        dispatch(uiOpenModal())
     }
 
     const onViewChange = (e) => {
@@ -71,7 +57,7 @@ const CalendarScreen = () => {
             <Navbar />
             <Calendar
                 localizer={localizer}
-                events={myEventsList}
+                events={events}
                 startAccessor="start"
                 endAccessor="end"
                 style={{ height: 500 }}

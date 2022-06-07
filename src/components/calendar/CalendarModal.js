@@ -1,10 +1,11 @@
 import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux';
 import { uiCloseModal } from '../../actions/ui';
+import { eventAddNew, eventClearActiveEvent } from '../../actions/events';
 
 
 const customStyles = {
@@ -23,9 +24,17 @@ Modal.setAppElement('#root');
 const now = moment();
 const nowPlusOne = now.clone().add(1, 'minutes');
 
+const initEvent = {
+    title: '',
+    notes: '',
+    start: now.toDate(),
+    end: nowPlusOne.toDate(),
+}
+
 const CalendarModal = () => {
 
     const { modalOpen } = useSelector(state => state.ui);
+    const { activeEvent } = useSelector(state => state.calendar);
     const dispatch = useDispatch();
 
     const [dateStart, setDateStart] = useState(now.toDate());
@@ -33,19 +42,20 @@ const CalendarModal = () => {
     const [titleValid, setTitleValid] = useState(true);
 
 
-    const [formValues, setFormValues] = useState(
-        {
-            title: 'Evento',
-            notes: '',
-            start: now.toDate(),
-            end: nowPlusOne.toDate(),
-        }
-    );
+    const [formValues, setFormValues] = useState(initEvent);
 
     const { notes, title, start, end } = formValues;
 
-    const handleImputChange = ({ target }) => {
+    useEffect(() => {
+        if (activeEvent) {
+            setFormValues(activeEvent);
+        } else {
+            setFormValues(initEvent);
+        }
 
+    }, [activeEvent]);
+
+    const handleImputChange = ({ target }) => {
         setFormValues({
             ...formValues,
             [target.name]: target.value
@@ -54,6 +64,8 @@ const CalendarModal = () => {
 
     const closeModal = () => {
         dispatch(uiCloseModal())
+        dispatch(eventClearActiveEvent())
+        setFormValues(initEvent);
     }
 
     const handleStartDateChange = (e) => {
@@ -83,9 +95,17 @@ const CalendarModal = () => {
         }
 
         if (title.trim().length < 2) {
-            setTitleValid(false)
-            return;
+            return setTitleValid(false);
         }
+
+        dispatch(eventAddNew({
+            ...formValues,
+            id: new Date().getTime(),
+            user: {
+                _id: '12',
+                name: 'Juan',
+            }
+        }));
 
         setTitleValid(true);
         closeModal();
