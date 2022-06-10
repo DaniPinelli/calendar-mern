@@ -1,20 +1,21 @@
-html, body {
+html,
+body {
     height: 100vh;
     width: 100vw;
 }
 
-.calendar-screen{
+.calendar-screen {
     display: flex;
     flex-flow: column;
     height: 100vh;
 }
 
-.rbc-calendar{
+.rbc-calendar {
     height: 100%;
 }
 
 /* Modal */
-.ReactModalPortal > div{
+.ReactModalPortal>div {
     opacity: 0;
 }
 
@@ -63,11 +64,19 @@ html, body {
     border: 0px solid gray !important;
 }
 
-.fab{
+.fab {
     border-radius: 100%;
     bottom: 1rem;
     font-size: 2rem;
     padding: 1rem;
     position: fixed;
     right: 1.5rem;
+}
+
+.fab-danger {
+    bottom: 1rem;
+    font-size: 1rem;
+    padding: 0.25rem;
+    position: fixed;
+    left: 1.5rem;
 }
